@@ -1,0 +1,91 @@
+Files to turn in : ft_list_push_strs.c, ft_list.h
+Allowed functions : ft_create_elem
+
+• Create the function ft_list_push_strs which creates a new list that includes all
+the string pointed by the element in strs.
+• size is the size of strs
+• The first element should be at the end of the list.
+• The first link’s address in the list is returned.
+• Here’s how it should be prototyped :
+t_list *ft_list_push_strs(int size, char **strs);
+
+Here's the implementation of the `ft_list_push_strs` function:
+
+```c
+#include "ft_list.h"
+
+t_list *ft_list_push_strs(int size, char **strs)
+{
+    t_list *list = NULL;
+
+    while (size > 0)
+    {
+        ft_list_push_front(&list, *strs);
+        strs++;
+        size--;
+    }
+
+    return list;
+}
+```
+
+This function takes the size of the `strs` array and an array of strings `strs`. It creates a new list and iterates over the `strs` array in reverse order, using `ft_list_push_front` to add each string to the front of the list. Finally, it returns the address of the first link in the list.
+
+Here's the `ft_list.h` file for the `ft_list_push_strs` function:
+
+```c
+#ifndef FT_LIST_H
+#define FT_LIST_H
+
+typedef struct s_list
+{
+    struct s_list *next;
+    void *data;
+} t_list;
+
+t_list *ft_create_elem(void *data);
+void ft_list_push_front(t_list **begin_list, void *data);
+int ft_list_size(t_list *begin_list);
+void ft_list_push_back(t_list **begin_list, void *data);
+t_list *ft_list_push_strs(int size, char **strs);
+
+#endif
+```
+
+Please make sure to include this header file in your program that uses the `ft_list_push_strs` function.
+
+Here's a test program for the `ft_list_push_strs` function:
+
+```c
+#include <stdio.h>
+#include "ft_list.h"
+
+int main(void)
+{
+    char *strs[] = {"Hello", "World", "OpenAI", "ChatGPT"};
+    int size = sizeof(strs) / sizeof(strs[0]);
+
+    t_list *list = ft_list_push_strs(size, strs);
+
+    // Traverse the list and print the data
+    t_list *current = list;
+    while (current != NULL)
+    {
+        printf("%s\n", (char *)current->data);
+        current = current->next;
+    }
+
+    // Free the list
+    t_list *temp;
+    while (list != NULL)
+    {
+        temp = list;
+        list = list->next;
+        free(temp);
+    }
+
+    return 0;
+}
+```
+
+Make sure to include the `ft_list.h` header file and compile the program with the appropriate flags and linker options.
