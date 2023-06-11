@@ -1,0 +1,124 @@
+Files to turn in : ft_list_find.c, ft_list.h
+Allowed functions : None
+
+• Create the function ft_list_find which returns the address of the first element’s
+data compared to data_ref with cmp makes cmp to return 0.
+• Here’s how it should be prototyped :
+t_list *ft_list_find(t_list *begin_list, void *data_ref, int (*cmp)());
+
+• Function pointed by cmp will be used as follows :
+(*cmp)(list_ptr->data, data_ref);
+
+Here's the implementation of the `ft_list_find` function:
+
+```c
+#include "ft_list.h"
+
+t_list *ft_list_find(t_list *begin_list, void *data_ref, int (*cmp)())
+{
+    t_list *current = begin_list;
+
+    while (current != NULL)
+    {
+        if ((*cmp)(current->data, data_ref) == 0)
+            return current;
+        current = current->next;
+    }
+
+    return NULL; // Element not found
+}
+```
+
+Make sure to include the `ft_list.h` header file and save this code in a file named `ft_list_find.c`.
+
+Here's the content of the `ft_list.h` file for the `ft_list_find` function:
+
+```c
+#ifndef FT_LIST_H
+# define FT_LIST_H
+
+typedef struct s_list
+{
+    struct s_list *next;
+    void *data;
+} t_list;
+
+t_list *ft_create_elem(void *data);
+void ft_list_push_front(t_list **begin_list, void *data);
+int ft_list_size(t_list *begin_list);
+void ft_list_push_back(t_list **begin_list, void *data);
+t_list *ft_list_push_strs(int size, char **strs);
+void ft_list_clear(t_list *begin_list, void (*free_fct)(void *));
+t_list *ft_list_at(t_list *begin_list, unsigned int nbr);
+void ft_list_reverse(t_list **begin_list);
+void ft_list_foreach(t_list *begin_list, void (*f)(void *));
+void ft_list_foreach_if(t_list *begin_list, void (*f)(void *), void *data_ref, int (*cmp)());
+t_list *ft_list_find(t_list *begin_list, void *data_ref, int (*cmp)());
+
+#endif
+```
+
+Make sure to save this code in a file named `ft_list.h` for the header file.
+
+Here's a test program for the `ft_list_find` function:
+
+```c
+#include <stdio.h>
+#include "ft_list.h"
+
+int ft_strcmp(char *s1, char *s2)
+{
+    while (*s1 && (*s1 == *s2))
+    {
+        s1++;
+        s2++;
+    }
+    return *(unsigned char *)s1 - *(unsigned char *)s2;
+}
+
+void print_list(t_list *list)
+{
+    while (list != NULL)
+    {
+        printf("%s ", (char *)list->data);
+        list = list->next;
+    }
+    printf("\n");
+}
+
+int main()
+{
+    t_list *list = NULL;
+
+    // Create a linked list
+    ft_list_push_front(&list, "apple");
+    ft_list_push_front(&list, "banana");
+    ft_list_push_front(&list, "cherry");
+    ft_list_push_front(&list, "durian");
+
+    printf("Original list: ");
+    print_list(list);
+
+    // Find element in the list
+    char *target = "banana";
+    t_list *found = ft_list_find(list, target, ft_strcmp);
+
+    if (found != NULL)
+        printf("Element '%s' found in the list\n", target);
+    else
+        printf("Element '%s' not found in the list\n", target);
+
+    // Find element not in the list
+    char *not_found = "grape";
+    t_list *not_found_result = ft_list_find(list, not_found, ft_strcmp);
+
+    if (not_found_result != NULL)
+        printf("Element '%s' found in the list\n", not_found);
+    else
+        printf("Element '%s' not found in the list\n", not_found);
+
+    return 0;
+}
+```
+
+Make sure to include the `ft_list.h` header file and compile the program with the necessary files.
