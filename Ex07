@@ -1,0 +1,128 @@
+Files to turn in : ft_list_at.c, ft_list.h
+Allowed functions : None
+
+• Create the function ft_list_at which returns the Nth element of the list, knowing
+that the first element of the list is when nbr equal 0.
+• In case of error, it should return a null pointer.
+• Here’s how it should be prototyped :
+t_list *ft_list_at(t_list *begin_list, unsigned int nbr);
+
+Here's the implementation of the `ft_list_at` function:
+
+```c
+#include "ft_list.h"
+
+t_list *ft_list_at(t_list *begin_list, unsigned int nbr)
+{
+    while (nbr > 0)
+    {
+        if (begin_list == NULL)
+            return NULL;
+        begin_list = begin_list->next;
+        nbr--;
+    }
+    return begin_list;
+}
+```
+
+In this function, we start from the `begin_list` and iterate `nbr` times to find the Nth element in the list. If `nbr` is greater than the number of elements in the list or the list is empty, we return a null pointer. Otherwise, we return the Nth element.
+
+Remember to include the `ft_list.h` file in your program, which contains the definition of the `t_list` structure and the prototype of the `ft_list_at` function.
+
+Here's the implementation of the `ft_list_at` function:
+
+```c
+#include "ft_list.h"
+
+t_list *ft_list_at(t_list *begin_list, unsigned int nbr)
+{
+    while (nbr > 0)
+    {
+        if (begin_list == NULL)
+            return NULL;
+        begin_list = begin_list->next;
+        nbr--;
+    }
+    return begin_list;
+}
+```
+
+In this function, we start from the `begin_list` and iterate `nbr` times to find the Nth element in the list. If `nbr` is greater than the number of elements in the list or the list is empty, we return a null pointer. Otherwise, we return the Nth element.
+
+Remember to include the `ft_list.h` file in your program, which contains the definition of the `t_list` structure and the prototype of the `ft_list_at` function.
+
+Certainly! Here's the `ft_list.h` file for the list-related functions:
+
+```c
+#ifndef FT_LIST_H
+#define FT_LIST_H
+
+typedef struct s_list
+{
+    struct s_list *next;
+    void *data;
+} t_list;
+
+t_list *ft_create_elem(void *data);
+void ft_list_push_front(t_list **begin_list, void *data);
+int ft_list_size(t_list *begin_list);
+void ft_list_push_back(t_list **begin_list, void *data);
+t_list *ft_list_push_strs(int size, char **strs);
+void ft_list_clear(t_list *begin_list, void (*free_fct)(void *));
+t_list *ft_list_at(t_list *begin_list, unsigned int nbr);
+
+#endif
+```
+
+Make sure to include this header file in your program whenever you need to use the list-related functions.
+
+Certainly! Here's an example test program for the `ft_list_at` function:
+
+```c
+#include <stdio.h>
+#include "ft_list.h"
+
+int main(void)
+{
+    t_list *list = ft_list_push_strs(5, (char *[]){"Hello", "World", "I", "Am", "Here"});
+    
+    printf("List elements:\n");
+    t_list *current = list;
+    int index = 0;
+    while (current)
+    {
+        printf("[%d] %s\n", index, (char *)(current->data));
+        current = current->next;
+        index++;
+    }
+
+    int position = 2; // Get the element at index 2
+    t_list *result = ft_list_at(list, position);
+    if (result)
+    {
+        printf("Element at position %d: %s\n", position, (char *)(result->data));
+    }
+    else
+    {
+        printf("Invalid position.\n");
+    }
+
+    position = 5; // Get the element at index 5 (out of range)
+    result = ft_list_at(list, position);
+    if (result)
+    {
+        printf("Element at position %d: %s\n", position, (char *)(result->data));
+    }
+    else
+    {
+        printf("Invalid position.\n");
+    }
+
+    // Clean up the list
+    ft_list_clear(list, free);
+
+    return 0;
+}
+```
+
+Make sure to include the `ft_list.h` header file and link against the necessary dependencies when compiling your program.
