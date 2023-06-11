@@ -1,0 +1,181 @@
+Files to turn in : ft_sorted_list_merge.c, ft_list.h
+Allowed functions : None
+
+• Create the function ft_sorted_list_merge which integrates the elements of a
+sorted list begin2 in another sorted list begin1, so that begin1 remains sorted by
+ascending order.
+• Here’s how it should be prototyped :
+void ft_sorted_list_merge(t_list **begin_list1, t_list *begin_list2, int (*cmp)());
+
+• Function pointed by cmp will be used as follows :
+(*cmp)(list_ptr->data, list_other_ptr->data);
+
+Sure! Here's the `ft_sorted_list_merge` function implementation:
+
+```c
+#include "ft_list.h"
+
+void ft_sorted_list_merge(t_list **begin_list1, t_list *begin_list2, int (*cmp)())
+{
+    if (*begin_list1 == NULL)
+    {
+        *begin_list1 = begin_list2;
+        return;
+    }
+    
+    if (begin_list2 == NULL)
+    {
+        return;
+    }
+
+    t_list *current1 = *begin_list1;
+    t_list *prev1 = NULL;
+    t_list *current2 = begin_list2;
+
+    while (current1 != NULL && current2 != NULL)
+    {
+        if ((*cmp)(current1->data, current2->data) > 0)
+        {
+            if (prev1 == NULL)
+            {
+                *begin_list1 = current2;
+            }
+            else
+            {
+                prev1->next = current2;
+            }
+
+            t_list *next2 = current2->next;
+            current2->next = current1;
+            prev1 = current2;
+            current2 = next2;
+        }
+        else
+        {
+            prev1 = current1;
+            current1 = current1->next;
+        }
+    }
+
+    if (current2 != NULL)
+    {
+        prev1->next = current2;
+    }
+}
+```
+
+Make sure to include the `ft_list.h` header file.
+
+Let me know if you need any further assistance!
+
+Certainly! Here's the `ft_list.h` file with the necessary definitions:
+
+```c
+#ifndef FT_LIST_H
+#define FT_LIST_H
+
+typedef struct s_list
+{
+    struct s_list *next;
+    void *data;
+} t_list;
+
+t_list *ft_create_elem(void *data);
+void ft_list_push_front(t_list **begin_list, void *data);
+int ft_list_size(t_list *begin_list);
+void ft_list_push_back(t_list **begin_list, void *data);
+t_list *ft_list_push_strs(int size, char **strs);
+void ft_list_clear(t_list *begin_list, void (*free_fct)(void *));
+t_list *ft_list_at(t_list *begin_list, unsigned int nbr);
+void ft_list_reverse(t_list **begin_list);
+void ft_list_foreach(t_list *begin_list, void (*f)(void *));
+void ft_list_foreach_if(t_list *begin_list, void (*f)(void *), void *data_ref, int (*cmp)());
+t_list *ft_list_find(t_list *begin_list, void *data_ref, int (*cmp)());
+void ft_list_remove_if(t_list **begin_list, void *data_ref, int (*cmp)(), void (*free_fct)(void *));
+void ft_list_merge(t_list **begin_list1, t_list *begin_list2);
+void ft_list_sort(t_list **begin_list, int (*cmp)());
+void ft_list_reverse_fun(t_list *begin_list);
+void ft_sorted_list_insert(t_list **begin_list, void *data, int (*cmp)());
+void ft_sorted_list_merge(t_list **begin_list1, t_list *begin_list2, int (*cmp)());
+
+#endif /* FT_LIST_H */
+```
+
+This header file includes the necessary function prototypes for the list operations. Remember to save this file as `ft_list.h` and include it in your program.
+
+Let me know if there's anything else I can help you with!
+
+Certainly! Here's a test program for the `ft_sorted_list_merge` function:
+
+```c
+#include <stdio.h>
+#include "ft_list.h"
+
+int ascending_order(void *data1, void *data2)
+{
+    int *num1 = (int *)data1;
+    int *num2 = (int *)data2;
+    
+    if (*num1 < *num2)
+        return -1;
+    else if (*num1 > *num2)
+        return 1;
+    else
+        return 0;
+}
+
+void print_list(t_list *begin_list)
+{
+    t_list *curr = begin_list;
+    while (curr != NULL)
+    {
+        int *data = (int *)(curr->data);
+        printf("%d ", *data);
+        curr = curr->next;
+    }
+    printf("\n");
+}
+
+int main()
+{
+    // Create the first sorted list
+    int num1 = 2;
+    int num2 = 5;
+    int num3 = 9;
+    t_list *list1 = ft_create_elem(&num1);
+    ft_list_push_back(&list1, &num2);
+    ft_list_push_back(&list1, &num3);
+    
+    // Create the second sorted list
+    int num4 = 3;
+    int num5 = 6;
+    int num6 = 8;
+    t_list *list2 = ft_create_elem(&num4);
+    ft_list_push_back(&list2, &num5);
+    ft_list_push_back(&list2, &num6);
+    
+    // Print the original lists
+    printf("List 1: ");
+    print_list(list1);
+    printf("List 2: ");
+    print_list(list2);
+    
+    // Merge the two lists
+    ft_sorted_list_merge(&list1, list2, ascending_order);
+    
+    // Print the merged list
+    printf("Merged List: ");
+    print_list(list1);
+    
+    // Free the memory
+    ft_list_clear(list1, free);
+    
+    return 0;
+}
+```
+
+This test program demonstrates the usage of `ft_sorted_list_merge` to merge two sorted lists in ascending order. It creates two initial sorted lists, merges them using `ft_sorted_list_merge`, and then prints the merged list.
+
+Make sure to include the `ft_list.h` header file and compile the program with the necessary files, such as `ft_sorted_list_merge.c`, `ft_list_push_back.c`, `ft_create_elem.c`, and any other files required for the functions being used.
+
+Let me know if there's anything else I can help you with!
