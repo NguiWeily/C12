@@ -1,0 +1,106 @@
+Files to turn in : ft_list_foreach_if.c, ft_list.h
+Allowed functions : None
+
+• Create the function ft_list_foreach_if which applies the function given as ar-
+gument to some of the list’s elements.
+
+• Only apply the function to the elements when cmp with data_ref, cmp returns 0
+• f should be apply with the same order as the list
+• Here’s how it should be prototyped :
+void ft_list_foreach_if(t_list *begin_list, void (*f)(void *), void
+*data_ref, int (*cmp)())
+
+• Functions pointed by f and by cmp will be used as follows :
+(*f)(list_ptr->data);
+(*cmp)(list_ptr->data, data_ref);
+
+For example, the function cmp could be ft_strcmp...
+
+Here's the implementation of the `ft_list_foreach_if` function:
+
+```c
+#include "ft_list.h"
+
+void ft_list_foreach_if(t_list *begin_list, void (*f)(void *), void *data_ref, int (*cmp)())
+{
+    t_list *current = begin_list;
+
+    while (current != NULL)
+    {
+        if ((*cmp)(current->data, data_ref) == 0)
+            (*f)(current->data);
+        
+        current = current->next;
+    }
+}
+```
+
+Make sure to include the `ft_list.h` header file in this program.
+
+Here's an example usage of `ft_list_foreach_if` with `ft_strcmp` as the comparison function:
+
+```c
+#include <stdio.h>
+#include <string.h>
+#include "ft_list.h"
+
+int ft_strcmp(void *s1, void *s2)
+{
+    return strcmp((char *)s1, (char *)s2);
+}
+
+void print_data(void *data)
+{
+    printf("%s\n", (char *)data);
+}
+
+int main(void)
+{
+    t_list *list = NULL;
+    char *data1 = "Hello";
+    char *data2 = "World";
+    char *data3 = "OpenAI";
+    char *data_ref = "World";
+
+    ft_list_push_back(&list, data1);
+    ft_list_push_back(&list, data2);
+    ft_list_push_back(&list, data3);
+
+    printf("List elements matching data_ref:\n");
+    ft_list_foreach_if(list, print_data, data_ref, ft_strcmp);
+
+    return 0;
+}
+```
+
+In this example, the `ft_list_foreach_if` function is used to apply the `print_data` function to list elements that match the `data_ref` string using `ft_strcmp` as the comparison function.
+
+Here's the content of the `ft_list.h` file for the `ft_list_foreach_if` function:
+
+```c
+#ifndef FT_LIST_H
+# define FT_LIST_H
+
+typedef struct s_list
+{
+    struct s_list *next;
+    void *data;
+} t_list;
+
+t_list *ft_create_elem(void *data);
+void ft_list_push_front(t_list **begin_list, void *data);
+int ft_list_size(t_list *begin_list);
+void ft_list_push_back(t_list **begin_list, void *data);
+t_list *ft_list_push_strs(int size, char **strs);
+void ft_list_clear(t_list *begin_list, void (*free_fct)(void *));
+t_list *ft_list_at(t_list *begin_list, unsigned int nbr);
+void ft_list_reverse(t_list **begin_list);
+void ft_list_foreach(t_list *begin_list, void (*f)(void *));
+void ft_list_foreach_if(t_list *begin_list, void (*f)(void *), void *data_ref, int (*cmp)());
+
+#endif
+```
+
+Make sure to save this code in a file named `ft_list.h` for the header file.
+
+Note: This header file includes all the previously defined functions and structures for the linked list.
