@@ -1,0 +1,91 @@
+Files to turn in : ft_list_foreach.c, ft_list.h
+Allowed functions : None
+
+• Create the function ft_list_foreach which applies the function given as argument
+to each of the list’s elements.
+• f should be apply with the same order as the list
+• Here’s how it should be prototyped :
+void ft_list_foreach(t_list *begin_list, void (*f)(void *));
+
+• The function pointed by f will be used as follows :
+(*f)(list_ptr->data);
+
+Here's the implementation of the `ft_list_foreach` function:
+
+```c
+#include "ft_list.h"
+
+void ft_list_foreach(t_list *begin_list, void (*f)(void *))
+{
+    t_list *current = begin_list;
+    while (current)
+    {
+        (*f)(current->data);
+        current = current->next;
+    }
+}
+```
+
+This function iterates over each element of the list starting from `begin_list`. For each element, it applies the function `f` to the `data` field of the current element by calling `(*f)(current->data)`. The function `f` is expected to have the signature `void f(void *)`, where `void *` is the type of the `data` field in the list element.
+
+Remember to include the `ft_list.h` header file with the appropriate structure definition and function prototypes.
+
+Certainly! Here's the `ft_list.h` file with the structure definition and function prototypes for the linked list operations:
+
+```c
+#ifndef FT_LIST_H
+# define FT_LIST_H
+
+typedef struct s_list
+{
+    struct s_list *next;
+    void *data;
+} t_list;
+
+t_list *ft_create_elem(void *data);
+void ft_list_push_front(t_list **begin_list, void *data);
+void ft_list_push_back(t_list **begin_list, void *data);
+void ft_list_push_strs(int size, char **strs);
+int ft_list_size(t_list *begin_list);
+void ft_list_clear(t_list *begin_list, void (*free_fct)(void *));
+t_list *ft_list_at(t_list *begin_list, unsigned int nbr);
+void ft_list_reverse(t_list **begin_list);
+void ft_list_foreach(t_list *begin_list, void (*f)(void *));
+
+#endif
+```
+
+Make sure to include this header file in your test program and any other file where you use the linked list operations.
+
+Certainly! Here's a test program for the `ft_list_foreach` function:
+
+```c
+#include <stdio.h>
+#include "ft_list.h"
+
+void print_data(void *data)
+{
+    printf("%s\n", (char *)data);
+}
+
+int main(void)
+{
+    t_list *list = NULL;
+    char *data1 = "Hello";
+    char *data2 = "World";
+    char *data3 = "OpenAI";
+
+    ft_list_push_back(&list, data1);
+    ft_list_push_back(&list, data2);
+    ft_list_push_back(&list, data3);
+
+    printf("List elements:\n");
+    ft_list_foreach(list, print_data);
+
+    return 0;
+}
+```
+
+This program creates a linked list and adds three string elements to it using `ft_list_push_back`. Then, it calls `ft_list_foreach` to print each element using the `print_data` function.
+
+Make sure to include the `ft_list.h` header file and compile the program with the necessary dependencies.
