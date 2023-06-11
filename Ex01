@@ -1,0 +1,39 @@
+Files to turn in : ft_list_push_front.c, ft_list.h
+Allowed functions : ft_create_elem
+
+• Create the function ft_list_push_front which adds a new element of type t_list
+to the beginning of the list.
+• It should assign data to the given argument.
+• If necessary, it’ll update the pointer at the beginning of the list.
+• Here’s how it should be prototyped :
+void ft_list_push_front(t_list **begin_list, void *data);
+
+Certainly! Here's the implementation of the `ft_list_push_front` function:
+
+```c
+#include "ft_list.h"
+
+void ft_list_push_front(t_list **begin_list, void *data)
+{
+    t_list *new_elem = ft_create_elem(data);
+    new_elem->next = *begin_list;
+    *begin_list = new_elem;
+}
+```
+
+Make sure to include the appropriate headers in your implementation file. Certainly! Here's the content of the `ft_list.h` file:
+
+```c
+#ifndef FT_LIST_H
+# define FT_LIST_H
+
+typedef struct s_list
+{
+    struct s_list *next;
+    void *data;
+} t_list;
+
+#endif
+```
+
+This header file defines the structure `t_list` used for linked list operations. Make sure to include this header file in your implementation files.
