@@ -1,0 +1,159 @@
+Files to turn in : ft_list_remove_if.c, ft_list.h
+Allowed functions : free
+
+• Create the function ft_list_remove_if which erases off the list all elements whose
+data compared to data_ref with cmp makes cmp to return 0.
+• The data from an element that should be erase, should be freed using free_fct
+• Here’s how it should be prototyped :
+void ft_list_remove_if(t_list **begin_list, void *data_ref, int (*cmp)(), void (*free_fct)(void *));
+
+• Function pointed by cmp and by free_fct will be used as follows :
+(*cmp)(list_ptr->data, data_ref);
+(*free_fct)(list_ptr->data);
+
+Here's the implementation of the `ft_list_remove_if` function:
+
+```c
+#include <stdlib.h>
+#include "ft_list.h"
+
+void ft_list_remove_if(t_list **begin_list, void *data_ref, int (*cmp)(), void (*free_fct)(void *))
+{
+    t_list *prev = NULL;
+    t_list *current = *begin_list;
+
+    while (current != NULL)
+    {
+        if ((*cmp)(current->data, data_ref) == 0)
+        {
+            // Match found, remove the element
+            if (prev == NULL)
+            {
+                // Removing the first element
+                *begin_list = current->next;
+            }
+            else
+            {
+                prev->next = current->next;
+            }
+
+            // Free the data and the element
+            (*free_fct)(current->data);
+            free(current);
+
+            // Move to the next element
+            current = (prev == NULL) ? *begin_list : prev->next;
+        }
+        else
+        {
+            // No match found, move to the next element
+            prev = current;
+            current = current->next;
+        }
+    }
+}
+```
+
+Make sure to include the `ft_list.h` header file when using this function.
+
+Certainly! Here's the `ft_list.h` file:
+
+```c
+#ifndef FT_LIST_H
+#define FT_LIST_H
+
+typedef struct s_list
+{
+    struct s_list *next;
+    void *data;
+} t_list;
+
+t_list *ft_create_elem(void *data);
+void ft_list_push_front(t_list **begin_list, void *data);
+int ft_list_size(t_list *begin_list);
+void ft_list_push_back(t_list **begin_list, void *data);
+t_list *ft_list_push_strs(int size, char **strs);
+void ft_list_clear(t_list *begin_list, void (*free_fct)(void *));
+t_list *ft_list_at(t_list *begin_list, unsigned int nbr);
+void ft_list_reverse(t_list **begin_list);
+void ft_list_foreach(t_list *begin_list, void (*f)(void *));
+void ft_list_foreach_if(t_list *begin_list, void (*f)(void *), void *data_ref, int (*cmp)());
+t_list *ft_list_find(t_list *begin_list, void *data_ref, int (*cmp)());
+void ft_list_remove_if(t_list **begin_list, void *data_ref, int (*cmp)(), void (*free_fct)(void *));
+
+#endif /* FT_LIST_H */
+```
+
+This header file declares all the functions for working with a linked list. You can include this file in your program to use the linked list functions.
+
+Certainly! Here's a test program for the `ft_list_remove_if` function:
+
+```c
+#include <stdio.h>
+#include "ft_list.h"
+
+// Custom compare function for integers
+int cmp_int(void *data1, void *data2)
+{
+    int *num1 = (int *)data1;
+    int *num2 = (int *)data2;
+    return (*num1 - *num2);
+}
+
+// Custom free function for integers
+void free_int(void *data)
+{
+    int *num = (int *)data;
+    free(num);
+}
+
+// Custom print function for integers
+void print_int(void *data)
+{
+    int *num = (int *)data;
+    printf("%d ", *num);
+}
+
+int main()
+{
+    // Create a linked list with integers
+    t_list *list = ft_create_elem((void *)malloc(sizeof(int)));
+    int *num1 = (int *)list->data;
+    *num1 = 10;
+
+    ft_list_push_back(&list, (void *)malloc(sizeof(int)));
+    int *num2 = (int *)list->next->data;
+    *num2 = 20;
+
+    ft_list_push_back(&list, (void *)malloc(sizeof(int)));
+    int *num3 = (int *)list->next->next->data;
+    *num3 = 30;
+
+    ft_list_push_back(&list, (void *)malloc(sizeof(int)));
+    int *num4 = (int *)list->next->next->next->data;
+    *num4 = 40;
+
+    // Print the initial list
+    printf("Initial list: ");
+    ft_list_foreach(list, print_int);
+    printf("\n");
+
+    // Remove elements with value 20
+    int value = 20;
+    ft_list_remove_if(&list, &value, cmp_int, free_int);
+
+    // Print the modified list
+    printf("Modified list: ");
+    ft_list_foreach(list, print_int);
+    printf("\n");
+
+    // Clear the list
+    ft_list_clear(list, free_int);
+
+    return 0;
+}
+```
+
+In this test program, we create a linked list with integer values and then remove elements from the list using the `ft_list_remove_if` function. We use custom compare, free, and print functions for integers. The program prints the initial list and the modified list after removing elements with a specific value. Finally, the list is cleared using the `ft_list_clear` function.
+
+Make sure to include the `"ft_list.h"` header file and compile the program with the appropriate flags and dependencies.
