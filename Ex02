@@ -1,0 +1,77 @@
+Files to turn in : ft_list_size.c, ft_list.h
+Allowed functions : None
+
+• Create the function ft_list_size which returns the number of elements in the
+list.
+• Here’s how it should be prototyped :
+int ft_list_size(t_list *begin_list);
+
+Here's the implementation of the `ft_list_size` function:
+
+```c
+#include "ft_list.h"
+
+int ft_list_size(t_list *begin_list)
+{
+    int size = 0;
+    t_list *current = begin_list;
+
+    while (current != NULL)
+    {
+        size++;
+        current = current->next;
+    }
+
+    return size;
+}
+```
+
+This function calculates the number of elements in the linked list by iterating through each element and incrementing a counter. It returns the final size of the list.
+
+Certainly! Here's the `ft_list.h` file containing the definition of the `t_list` structure and the function prototype for `ft_list_size`:
+
+```c
+#ifndef FT_LIST_H
+# define FT_LIST_H
+
+typedef struct s_list
+{
+    struct s_list *next;
+    void *data;
+} t_list;
+
+int ft_list_size(t_list *begin_list);
+
+#endif /* FT_LIST_H */
+```
+
+This header file includes the definition of the `t_list` structure and declares the function prototype for `ft_list_size`.
+
+Certainly! Here's a test program for the `ft_list_size` function:
+
+```c
+#include <stdio.h>
+#include "ft_list.h"
+
+int main(void)
+{
+    t_list *list = NULL;
+
+    // Create a list with 5 elements
+    for (int i = 0; i < 5; i++)
+    {
+        t_list *new_elem = ft_create_elem(NULL);
+        new_elem->data = (void *)(intptr_t)i;
+        new_elem->next = list;
+        list = new_elem;
+    }
+
+    // Call ft_list_size and print the result
+    int size = ft_list_size(list);
+    printf("List size: %d\n", size);
+
+    return 0;
+}
+```
+
+In this test program, we create a linked list with 5 elements using the `ft_create_elem` function. We assign integer values to the `data` field of each element. Then, we call the `ft_list_size` function to get the size of the list and print it.
