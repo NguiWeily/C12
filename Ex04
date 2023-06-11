@@ -1,0 +1,94 @@
+Files to turn in : ft_list_push_back.c, ft_list.h
+Allowed functions : ft_create_elem
+
+• Create the function ft_list_push_back which adds a new element of t_list type
+at the end of the list.
+• It should assign data to the given argument.
+• If necessary, it’ll update the pointer at the beginning of the list.
+• Here’s how it should be prototyped :
+void ft_list_push_back(t_list **begin_list, void *data);
+
+Certainly! Here's the implementation of the `ft_list_push_back` function:
+
+```c
+#include "ft_list.h"
+
+void ft_list_push_back(t_list **begin_list, void *data)
+{
+    t_list *new_elem = ft_create_elem(data);
+
+    if (*begin_list == NULL)
+    {
+        *begin_list = new_elem;
+        return;
+    }
+
+    t_list *current = *begin_list;
+    while (current->next != NULL)
+    {
+        current = current->next;
+    }
+
+    current->next = new_elem;
+}
+```
+
+In this implementation, we first create a new element using the `ft_create_elem` function. If the list is empty (`*begin_list` is `NULL`), we simply update the `*begin_list` pointer to point to the new element and return. Otherwise, we traverse the list until we reach the last element, and then update its `next` pointer to point to the new element.
+
+Remember to include the `ft_list.h` header file, which should contain the definition of the `t_list` structure and the prototype of the `ft_create_elem` function.
+
+Certainly! Here's the `ft_list.h` file with the definition of the `t_list` structure and the function prototypes:
+
+```c
+#ifndef FT_LIST_H
+#define FT_LIST_H
+
+typedef struct s_list
+{
+    struct s_list *next;
+    void *data;
+} t_list;
+
+t_list *ft_create_elem(void *data);
+void ft_list_push_front(t_list **begin_list, void *data);
+void ft_list_push_back(t_list **begin_list, void *data);
+int ft_list_size(t_list *begin_list);
+
+#endif
+```
+
+Make sure to include this header file in your program when using the `t_list` structure and the list-related functions.
+
+Certainly! Here's a test program for the `ft_list_push_back` function:
+
+```c
+#include <stdio.h>
+#include "ft_list.h"
+
+void print_list(t_list *list)
+{
+    while (list != NULL)
+    {
+        printf("%s ", (char *)list->data);
+        list = list->next;
+    }
+    printf("\n");
+}
+
+int main()
+{
+    t_list *list = NULL;
+
+    // Push elements to the back of the list
+    ft_list_push_back(&list, "Hello");
+    ft_list_push_back(&list, "World");
+    ft_list_push_back(&list, "!");
+    
+    // Print the list
+    print_list(list);
+    
+    return 0;
+}
+```
+
+This program creates an empty list and then uses `ft_list_push_back` to add elements to the back of the list. Finally, it prints the contents of the list.
