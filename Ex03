@@ -1,0 +1,83 @@
+Files to turn in : ft_list_last.c, ft_list.h
+Allowed functions : None
+
+• Create the function ft_list_last which returns the last element of the list.
+• Here’s how it should be prototyped :
+t_list *ft_list_last(t_list *begin_list);
+
+Certainly! Here's a test program for the `ft_list_size` function:
+
+```c
+#include <stdio.h>
+#include "ft_list.h"
+
+int main(void)
+{
+    t_list *list = NULL;
+
+    // Create a list with 5 elements
+    for (int i = 0; i < 5; i++)
+    {
+        t_list *new_elem = ft_create_elem(NULL);
+        new_elem->data = (void *)(intptr_t)i;
+        new_elem->next = list;
+        list = new_elem;
+    }
+
+    // Call ft_list_size and print the result
+    int size = ft_list_size(list);
+    printf("List size: %d\n", size);
+
+    return 0;
+}
+```
+
+In this test program, we create a linked list with 5 elements using the `ft_create_elem` function. We assign integer values to the `data` field of each element. Then, we call the `ft_list_size` function to get the size of the list and print it.
+
+Certainly! Here's the `ft_list.h` file for the `ft_list_size` function:
+
+```c
+#ifndef FT_LIST_H
+# define FT_LIST_H
+
+typedef struct s_list
+{
+    struct s_list *next;
+    void *data;
+} t_list;
+
+int ft_list_size(t_list *begin_list);
+
+#endif
+```
+
+The `ft_list.h` file defines the structure `s_list` for the linked list and declares the `ft_list_size` function. It ensures that the header file is included only once using include guards (`#ifndef`, `#define`, `#endif`).
+
+Certainly! Here's a test program for the `ft_list_size` function:
+
+```c
+#include <stdio.h>
+#include "ft_list.h"
+
+int main(void)
+{
+    t_list *list = NULL;
+
+    // Create a linked list with 5 elements
+    for (int i = 0; i < 5; i++)
+    {
+        t_list *new_elem = ft_create_elem(NULL);
+        new_elem->data = i;
+        new_elem->next = list;
+        list = new_elem;
+    }
+
+    // Print the size of the list
+    int size = ft_list_size(list);
+    printf("Size of the list: %d\n", size);
+
+    return 0;
+}
+```
+
+In this test program, we create a linked list with 5 elements and then call the `ft_list_size` function to get the size of the list. Finally, we print the size to the console.
