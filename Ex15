@@ -1,0 +1,133 @@
+Files to turn in : ft_list_reverse_fun.c, ft_list.h
+Allowed functions : None
+
+• Create the function ft_list_reverse_fun which reverses the order of the elements
+of the list.
+• Here’s how it should be prototyped :
+void ft_list_reverse_fun(t_list *begin_list);
+
+Sure! Here's the implementation of the `ft_list_reverse_fun` function:
+
+```c
+#include "ft_list.h"
+
+void ft_list_reverse_fun(t_list *begin_list)
+{
+    t_list *prev = NULL;
+    t_list *current = begin_list;
+    t_list *next = NULL;
+
+    while (current != NULL)
+    {
+        next = current->next;
+        current->next = prev;
+        prev = current;
+        current = next;
+    }
+
+    begin_list = prev;
+}
+```
+
+This function reverses the order of the elements in the linked list by modifying the `next` pointers of each node. It uses three pointers, `prev`, `current`, and `next`, to keep track of the nodes during the reversal process.
+
+Make sure to include the `ft_list.h` file in your program when using this function.
+
+Let me know if you need any further assistance!
+
+Certainly! Here's the `ft_list.h` file containing the structure definition and function prototype for the linked list:
+
+```c
+#ifndef FT_LIST_H
+# define FT_LIST_H
+
+typedef struct      s_list
+{
+    struct s_list   *next;
+    void            *data;
+}                   t_list;
+
+#endif
+```
+
+This header file defines the `t_list` structure, which represents a node in the linked list. It contains a pointer to the next node (`next`) and a pointer to the data stored in the node (`data`).
+
+Make sure to include this `ft_list.h` file in your program whenever you work with linked lists.
+
+Let me know if you need any further assistance!
+
+Certainly! Here's a test program for the `ft_list_reverse_fun` function:
+
+```c
+#include <stdio.h>
+#include "ft_list.h"
+
+// Function to display the data in each list node
+void display_data(void *data)
+{
+    printf("%d ", *(int*)data);
+}
+
+// Function to create a new list node
+t_list *create_node(int data)
+{
+    t_list *node = malloc(sizeof(t_list));
+    if (node)
+    {
+        node->data = malloc(sizeof(int));
+        if (node->data)
+        {
+            *(int*)(node->data) = data;
+            node->next = NULL;
+        }
+    }
+    return node;
+}
+
+// Function to free the memory allocated for the list
+void free_list(t_list *list)
+{
+    t_list *current = list;
+    t_list *next;
+
+    while (current)
+    {
+        next = current->next;
+        free(current->data);
+        free(current);
+        current = next;
+    }
+}
+
+int main(void)
+{
+    // Create a linked list
+    t_list *list = create_node(1);
+    list->next = create_node(2);
+    list->next->next = create_node(3);
+    list->next->next->next = create_node(4);
+    list->next->next->next->next = create_node(5);
+
+    printf("Original List: ");
+    ft_list_foreach(list, display_data); // Display the original list
+    printf("\n");
+
+    // Reverse the list
+    ft_list_reverse_fun(list);
+
+    printf("Reversed List: ");
+    ft_list_foreach(list, display_data); // Display the reversed list
+    printf("\n");
+
+    // Free the memory allocated for the list
+    free_list(list);
+
+    return 0;
+}
+```
+
+In this test program, we create a linked list with nodes containing integers from 1 to 5. We then call the `ft_list_reverse_fun` function to reverse the order of the list. Finally, we display the original and reversed lists using the `ft_list_foreach` function.
+
+Remember to include the `ft_list.h` header file in your program and compile it with the necessary dependencies.
+
+Let me know if you have any further questions!
