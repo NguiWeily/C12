@@ -1,0 +1,92 @@
+• For the following exercises, you have to use the following structure :
+typedef struct s_list
+{
+struct s_list *next;
+void *data;
+} t_list;
+
+• You’ll have to include this structure in a file ft_list.h and submit it for each
+exercise.
+• From exercise 01 onward, we’ll use our ft_create_elem, so make arrangements (it
+could be useful to have its prototype in a file ft_list.h...).
+
+Files to turn in : ft_create_elem.c, ft_list.h
+Allowed functions : malloc
+
+• Create the function ft_create_elem which creates a new element of t_list type.
+• It should assign data to the given argument and next to NULL.
+• Here’s how it should be prototyped :
+t_list *ft_create_elem(void *data);
+
+Here's the implementation of the `ft_create_elem` function:
+
+```c
+#include <stdlib.h>
+#include "ft_list.h"
+
+t_list *ft_create_elem(void *data)
+{
+    t_list *elem = (t_list *)malloc(sizeof(t_list));
+    if (elem)
+    {
+        elem->data = data;
+        elem->next = NULL;
+    }
+    return elem;
+}
+```
+
+In this implementation, we allocate memory for a new `t_list` element using `malloc`. If the allocation is successful, we assign the given `data` to the `data` field of the element and set the `next` field to `NULL`. Finally, we return the created element.
+
+Make sure to include the appropriate header files and define the `t_list` structure correctly in the `ft_list.h` file for this implementation to work.
+
+Certainly! Here's the `ft_list.h` file that includes the `t_list` structure definition:
+
+```c
+#ifndef FT_LIST_H
+#define FT_LIST_H
+
+typedef struct s_list
+{
+    struct s_list *next;
+    void *data;
+} t_list;
+
+#endif /* FT_LIST_H */
+```
+
+Make sure to save this code in a file named `ft_list.h`. The `#ifndef` and `#define` directives are used to prevent multiple inclusions of the header file. The `t_list` structure is defined with a `next` pointer and a `data` pointer.
+
+Remember to include this header file in your programs that use the `t_list` structure and the `ft_create_elem` function.
+
+Certainly! Here's an example test program for the `ft_create_elem` function:
+
+```c
+#include <stdlib.h>
+#include "ft_list.h"
+
+int main()
+{
+    // Create an element with integer data
+    int *data1 = malloc(sizeof(int));
+    *data1 = 42;
+    t_list *elem1 = ft_create_elem(data1);
+
+    // Create an element with string data
+    char *data2 = "Hello, world!";
+    t_list *elem2 = ft_create_elem(data2);
+
+    // Print the data of each element
+    printf("Element 1 data: %d\n", *(int*)(elem1->data));
+    printf("Element 2 data: %s\n", (char*)(elem2->data));
+
+    // Free the allocated memory
+    free(data1);
+    free(elem1);
+    free(elem2);
+
+    return 0;
+}
+```
+
+Make sure to include the appropriate headers and link against the necessary libraries when compiling this test program.
