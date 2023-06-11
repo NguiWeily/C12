@@ -1,0 +1,94 @@
+Files to turn in : ft_list_clear.c, ft_list.h
+Allowed functions : free
+
+• Create the function ft_list_clear which remove and free all links from the list.
+• free_fct to free each data
+• Here’s how it should be prototyped :
+void ft_list_clear(t_list *begin_list, void (*free_fct)(void *));
+
+Here's the implementation of the `ft_list_clear` function:
+
+```c
+#include "ft_list.h"
+
+void ft_list_clear(t_list *begin_list, void (*free_fct)(void *))
+{
+    t_list *current = begin_list;
+    t_list *next;
+
+    while (current != NULL)
+    {
+        next = current->next;
+        free_fct(current->data);
+        free(current);
+        current = next;
+    }
+}
+```
+
+Make sure to include the `ft_list.h` header file when using this function.
+
+Certainly! Here's the `ft_list.h` file for your reference:
+
+```c
+#ifndef FT_LIST_H
+# define FT_LIST_H
+
+typedef struct s_list
+{
+    struct s_list *next;
+    void *data;
+} t_list;
+
+#endif
+```
+
+This header file defines the structure `t_list` used for linked list elements.
+
+Certainly! Here's a test program for the `ft_list_clear` function:
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include "ft_list.h"
+
+// Function to free the data in a list element
+void free_data(void *data)
+{
+    free(data);
+}
+
+// Function to print the list
+void print_list(t_list *list)
+{
+    while (list)
+    {
+        printf("%s ", (char *)list->data);
+        list = list->next;
+    }
+    printf("\n");
+}
+
+int main(void)
+{
+    // Create a linked list
+    t_list *list = ft_create_elem("Hello");
+    list->next = ft_create_elem("World");
+    list->next->next = ft_create_elem("!");
+
+    // Print the initial list
+    printf("Initial List: ");
+    print_list(list);
+
+    // Clear the list
+    ft_list_clear(list, &free_data);
+
+    // Print the cleared list
+    printf("Cleared List: ");
+    print_list(list);
+
+    return 0;
+}
+```
+
+In this test program, we create a linked list with three elements. We then print the initial list, clear it using `ft_list_clear`, and print the cleared list. The `free_data` function is passed as the argument to `ft_list_clear` to free the data in each list element.
