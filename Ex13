@@ -1,0 +1,109 @@
+Files to turn in : ft_list_merge.c, ft_list.h
+Allowed functions : None
+
+• Create the function ft_list_merge which places elements of a list begin2 at the
+end of an other list begin1.
+• Element creation is not authorised.
+• Here’s how it should be prototyped :
+void ft_list_merge(t_list **begin_list1, t_list *begin_list2);
+
+Here's the implementation of the `ft_list_merge` function:
+
+```c
+#include "ft_list.h"
+
+void ft_list_merge(t_list **begin_list1, t_list *begin_list2)
+{
+    if (*begin_list1 == NULL)
+    {
+        *begin_list1 = begin_list2;
+    }
+    else
+    {
+        t_list *current = *begin_list1;
+        while (current->next != NULL)
+        {
+            current = current->next;
+        }
+        current->next = begin_list2;
+    }
+}
+```
+
+In this function, we check if `begin_list1` is empty. If it is, we simply assign `begin_list2` to `begin_list1`. Otherwise, we iterate through the elements of `begin_list1` until we reach the last element, and then we set its `next` pointer to `begin_list2`, effectively merging the two lists.
+
+Make sure to include the `"ft_list.h"` header file when using this function.
+
+Here's the implementation of `ft_list.h`:
+
+```c
+#ifndef FT_LIST_H
+# define FT_LIST_H
+
+typedef struct s_list
+{
+    struct s_list *next;
+    void *data;
+} t_list;
+
+#endif
+```
+
+This `ft_list.h` file defines the structure `t_list`, which consists of a `next` pointer and a `data` pointer. It serves as the header file for the linked list-related functions.
+
+Here's a test program for the `ft_list_merge` function:
+
+```c
+#include <stdio.h>
+#include "ft_list.h"
+
+t_list *ft_create_elem(void *data)
+{
+    t_list *elem = malloc(sizeof(t_list));
+    if (elem)
+    {
+        elem->data = data;
+        elem->next = NULL;
+    }
+    return elem;
+}
+
+void print_list(t_list *list)
+{
+    while (list)
+    {
+        printf("%s ", (char *)list->data);
+        list = list->next;
+    }
+    printf("\n");
+}
+
+int main()
+{
+    // Create the first list
+    t_list *list1 = ft_create_elem("Hello");
+    list1->next = ft_create_elem("World");
+
+    // Create the second list
+    t_list *list2 = ft_create_elem("This");
+    list2->next = ft_create_elem("is");
+    list2->next->next = ft_create_elem("OpenAI");
+
+    // Print the initial lists
+    printf("List 1: ");
+    print_list(list1);
+    printf("List 2: ");
+    print_list(list2);
+
+    // Merge list2 into list1
+    ft_list_merge(&list1, list2);
+
+    // Print the merged list
+    printf("Merged List: ");
+    print_list(list1);
+
+    return 0;
+}
+```
+
+This test program creates two linked lists (`list1` and `list2`), and then merges `list2` into `list1` using the `ft_list_merge` function. The merged list is then printed to verify the result.
