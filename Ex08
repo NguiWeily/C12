@@ -1,0 +1,122 @@
+Files to turn in : ft_list_reverse.c
+Allowed functions : None
+
+• Create the function ft_list_reverse which reverses the order of a list’s elements.
+The value of each element must remain the same.
+• Beware in that function we will use our own ft_list.h
+• Here’s how it should be prototyped :
+void ft_list_reverse(t_list **begin_list);
+
+Here's the implementation of the `ft_list_reverse` function:
+
+```c
+#include "ft_list.h"
+
+void ft_list_reverse(t_list **begin_list)
+{
+    t_list *prev = NULL;
+    t_list *current = *begin_list;
+    t_list *next = NULL;
+
+    while (current != NULL)
+    {
+        next = current->next;
+        current->next = prev;
+        prev = current;
+        current = next;
+    }
+
+    *begin_list = prev;
+}
+```
+
+Make sure to include the `ft_list.h` header file when using this function.
+
+Certainly! Here's the content of the `ft_list.h` file:
+
+```c
+#ifndef FT_LIST_H
+# define FT_LIST_H
+
+typedef struct s_list
+{
+    struct s_list *next;
+    void *data;
+} t_list;
+
+#endif
+```
+
+This header file defines the structure `s_list` which represents a linked list node. It contains a pointer to the next node (`next`) and a generic pointer to the data (`data`).
+
+Certainly! Here's a test program for the `ft_list_reverse` function:
+
+```c
+#include <stdlib.h>
+#include <stdio.h>
+#include "ft_list.h"
+
+// Function to create a new element for testing
+t_list *ft_create_elem(void *data)
+{
+    t_list *elem = (t_list *)malloc(sizeof(t_list));
+    if (elem)
+    {
+        elem->next = NULL;
+        elem->data = data;
+    }
+    return elem;
+}
+
+// Function to display the list elements
+void display_list(t_list *list)
+{
+    t_list *current = list;
+    while (current)
+    {
+        printf("%s ", (char *)current->data);
+        current = current->next;
+    }
+    printf("\n");
+}
+
+// Function to free the list memory
+void free_list(t_list *list)
+{
+    t_list *current = list;
+    while (current)
+    {
+        t_list *temp = current;
+        current = current->next;
+        free(temp);
+    }
+}
+
+// Function to reverse the list
+void ft_list_reverse(t_list **begin_list);
+
+int main(void)
+{
+    // Create a sample list
+    t_list *list = ft_create_elem("Hello");
+    list->next = ft_create_elem("World");
+    list->next->next = ft_create_elem("OpenAI");
+    list->next->next->next = ft_create_elem("GPT-3.5");
+    list->next->next->next->next = ft_create_elem("Model");
+
+    printf("Original list: ");
+    display_list(list);
+
+    ft_list_reverse(&list);
+
+    printf("Reversed list: ");
+    display_list(list);
+
+    // Free the list memory
+    free_list(list);
+
+    return 0;
+}
+```
+
+This test program demonstrates the usage of the `ft_list_reverse` function. It creates a sample list, displays the original list, calls the `ft_list_reverse` function to reverse the list, and then displays the reversed list. Finally, it frees the memory allocated for the list.
